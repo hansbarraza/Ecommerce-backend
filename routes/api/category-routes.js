@@ -2,7 +2,6 @@ const router = require('express').Router();
 const { Category, Product } = require('../../models');
 
 // The `/api/categories` endpoint
-
 router.get('/', (req, res) => {
   // find all categories
   // be sure to include its associated Products
@@ -34,13 +33,18 @@ router.get('/:id', (req, res) => {
       }
     ]
   })
-  .then(categoryById => {
-    if (!categoryById) {
-      res.status(400).json({message:'No category found with this id'});
-      return;
-    }
-    res.json(categoryById);
-  })
+  // .then(categoryById => {
+  //   if (!categoryById) {
+  //     res.status(400).json({message:'No category found with this id'});
+  //     return;
+  //   }
+  //   res.json(categoryById);
+  // })
+  .then(categoryById => !categoryById
+    ? res.status(400).json({message: 'No category found with this id'})
+    : res.json(categoryById)
+  )
+  
   .catch(err => {
     if (err) throw err;
   })
@@ -64,13 +68,18 @@ router.put('/:id', (req, res) => {
       id: req.params.id
     }
   })
-    .then(updatedCategory => {
-      if (!updatedCategory[0]) {
-        res.status(400).json({message: 'No category found with this id'})
-        return;
-      }
-      res.json(updatedCategory);
-    })
+    // .then(updatedCategory => {
+    //   if (!updatedCategory[0]) {
+    //     res.status(400).json({message: 'No category found with this id'})
+    //     return;
+    //   }
+    //   res.json(updatedCategory);
+    // })
+    .then(updatedCategory => !updatedCategory[0]
+      ? res.status(400).json({message: 'No category found with this id'})
+      : res.json(updatedCategory)
+    )
+    
     .catch(err => {
       if (err) throw err;
     })
@@ -83,16 +92,17 @@ router.delete('/:id', (req, res) => {
       id: req.params.id
     }
   })
-    .then(deleteCategory => {
-      if (!deleteCategory) {
-        res.status(400).json({message: 'No category found with this id'})
-        return;
-      }
-      res.json(deleteCategory);
-    })
+    // .then(deleteCategory => {
+    //   if (!deleteCategory) {
+    //     res.status(400).json({message: 'No category found with this id'})
+    //     return;
+    //   }
+    //   res.json(deleteCategory);
+    // })
+    .then(deleteCategory => deleteCategory ? res.json(deleteCategory) : res.status(402).json({ message: 'No category found with this id'}))
     .catch(err => {
       if (err) throw err;
     })
-});
+  })
 
 module.exports = router;
