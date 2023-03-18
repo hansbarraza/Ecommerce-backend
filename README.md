@@ -8,7 +8,9 @@ This is an e-commerce back end application built using Express.js and Sequelize 
 
 Walkthrough video demonstrating the functionality of the application.
 
-![()]
+![Demo of Ecommerce app](./assets/ecomdemo1.gif)
+![Demo of Ecommerce app](./assets/ecomdemo2.gif)
+![Demo of Ecommerce app](./assets/ecomdemo3.gif)
 
 ## Installation and Usage
 1. Clone the repository to your local machine.
