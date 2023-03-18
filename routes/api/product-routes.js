@@ -2,11 +2,8 @@ const router = require('express').Router();
 const { Product, Category, Tag, ProductTag } = require('../../models');
 
 // The `/api/products` endpoint
-
-// get all products
+// find all products includes associated Category and Tag data
 router.get('/', (req, res) => {
-  // find all products
-  // be sure to include its associated Category and Tag data
   Product.findAll( {
     include: [
       {
@@ -25,10 +22,8 @@ router.get('/', (req, res) => {
   })
 });
 
-// get one product
+// find a single product by its `id` includes associated Category and Tag data
 router.get('/:id', (req, res) => {
-  // find a single product by its `id`
-  // be sure to include its associated Category and Tag data
   Product.findOne( {
     where: {
       id: req.params.id
@@ -44,13 +39,6 @@ router.get('/:id', (req, res) => {
       }
     ]
   })
-  // .then(findProductById => {
-  //   if (!findProductById) {
-  //     res.status(err).json({'No product by that id'});
-  //     return;
-  //   }
-  //   res.json(findProductById);
-  // })
   .then(findProductById => findProductById ? res.json(findProductById) : res.status(402).json({ message: 'No product by that id'}))
   .catch(err => {
     if (err) throw err;
@@ -59,14 +47,6 @@ router.get('/:id', (req, res) => {
 
 // create new product
 router.post('/', (req, res) => {
-  /* req.body should look like this...
-    {
-      product_name: "Basketball",
-      price: 200.00,
-      stock: 3,
-      tagIds: [1, 2, 3, 4]
-    }
-  */
   Product.create({
     product_name: req.body.product_name,
     price: req.body.price,
@@ -137,20 +117,14 @@ router.put('/:id', (req, res) => {
     });
 });
 
+// delete one product by its `id` value
 router.delete('/:id', (req, res) => {
-  // delete one product by its `id` value
   Product.destroy( {
     where: {
       id: req.params.id
     }
   })
-  // .then(deleteProduct => {
-  //   if (!deleteProduct) {
-  //     res.status(err).json({message: 'No product with this id'});
-  //     return;
-  //   }
   .then(deleteProduct => deleteProduct ? res.json(deleteProduct) : res.status(402).json({ message: 'No product with this id'}))
-
   .catch(err => {
     if (err) throw err;
   })
